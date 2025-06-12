@@ -6,22 +6,39 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "npx prisma generate --schema ./prisma-user-database/schema.prisma --no-engine && npx prisma generate --schema ./prisma-post-database/schema.prisma --no-engine",
+    "generate": "npx prisma generate --schema ./prisma-user-database/schema.prisma --no-engine && npx prisma generate --schema ./prisma-post-database/schema.prisma --no-engine",
+    "generate:user": "npx prisma generate --schema ./prisma-user-database/schema.prisma --no-engine",
+    "generate:post": "npx prisma generate --schema ./prisma-post-database/schema.prisma --no-engine",
+    "migrate": "npx prisma migrate dev --schema ./prisma-user-database/schema.prisma && npx prisma migrate dev --schema ./prisma-post-database/schema.prisma",
+    "migrate:user": "npx prisma migrate dev --schema ./prisma-user-database/schema.prisma",
+    "migrate:post": "npx prisma migrate dev --schema ./prisma-post-database/schema.prisma",
+    "deploy": "npx prisma migrate deploy --schema ./prisma-user-database/schema.prisma && npx prisma migrate deploy --schema ./prisma-post-database/schema.prisma",
+    "deploy:user": "npx prisma migrate deploy --schema ./prisma-user-database/schema.prisma",
+    "deploy:post": "npx prisma migrate deploy --schema ./prisma-post-database/schema.prisma",
+    "studio": "npx prisma studio --schema ./prisma-user-database/schema.prisma --port 5555 & npx prisma studio --schema ./prisma-post-database/schema.prisma --port 5556",
+    "studio:user": "npx prisma studio --schema ./prisma-user-database/schema.prisma --port 5555",
+    "studio:post": "npx prisma studio --schema ./prisma-post-database/schema.prisma --port 5556",
+    "docker:db:posts": "docker run --name db-posts -p 5451:5432 -e POSTGRES_PASSWORD=password -e POSTGRES_USER=postgres -e POSTGRES_DB=posts -d postgres:16.1-alpine",
+    "docker:db:users": "docker run --name db-users -p 5452:5432 -e POSTGRES_PASSWORD=password -e POSTGRES_USER=postgres -e POSTGRES_DB=users -d postgres:16.1-alpine"
   },
   "dependencies": {
+    "@prisma/client": "^6.9.0",
+    "next": "15.3.3",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "next": "15.3.3"
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4",
     "eslint": "^9",
     "eslint-config-next": "15.3.3",
-    "@eslint/eslintrc": "^3"
+    "prisma": "^6.9.0",
+    "tailwindcss": "^4",
+    "typescript": "^5"
   }
 }

@@ -1,6 +1,17 @@
 import Image from "next/image";
+import { postDBPrismaClient } from "../../lib/post-prisma-client";
+import { userDBPrismaClient } from "../../lib/user-prisma-client";
+import { User } from "../../prisma-user-database/user-database-client-types";
+import { Post } from "../../prisma-post-database/post-database-client-types";
 
-export default function Home() {
+export default async function Home() {
+
+  const posts = await postDBPrismaClient.post.findMany();
+  const users = await userDBPrismaClient.user.findMany();
+
+  console.log(posts);
+  console.log(users);
+
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
@@ -51,6 +62,42 @@ export default function Home() {
           </a>
         </div>
       </main>
+
+      <main className="min-h-screen bg-gray-50 py-12">
+      <div className="max-w-4xl mx-auto px-4">
+        <header className="mb-12 text-center">
+          <h1 className="text-5xl font-extrabold text-gray-900">Multi-DB Showcase</h1>
+          <p className="mt-4 text-xl text-gray-600">
+            Data fetched from two distinct databases.
+          </p>
+        </header>
+
+        <section className="mb-8 bg-white shadow-md rounded-lg p-6">
+          <h2 className="text-2xl font-semibold text-gray-800 border-b pb-2 mb-4">
+            User Data
+          </h2>
+          {users && users.length > 0 && users.map((user: User) => (
+            <div key={user?.id}>
+              <h3>{user?.firstName} {user?.lastName}</h3>
+              <p>{user?.email}</p>
+            </div>
+          ))}
+        </section>
+
+        <section className="bg-white shadow-md rounded-lg p-6">
+          <h2 className="text-2xl font-semibold text-gray-800 border-b pb-2 mb-4">
+            Post Data
+          </h2>
+          {posts && posts.length > 0 && posts.map((post: Post) => (
+            <div key={post?.id}>
+              <h3>{post?.title}</h3>
+              <p>{post?.content}</p>
+            </div>
+          ))}
+        </section>
+      </div>
+    </main>
+
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
         <a
           className="flex items-center gap-2 hover:underline hover:underline-offset-4"

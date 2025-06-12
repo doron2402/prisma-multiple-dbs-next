@@ -1,0 +1,23 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../prisma-post-database/post-database-client-types"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTS_DATABASE_URL")
+}
+
+model Post {
+  id       String  @id @default(uuid())
+  title    String
+  content  String?
+  authorId Int // link to the users table
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  isActive   Boolean @default(true)
+  isDeleted  Boolean @default(false)
+  isVerified Boolean @default(false)
+}

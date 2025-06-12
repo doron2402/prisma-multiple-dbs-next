@@ -1,0 +1,18 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Next.js",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "env": {
+        "NODE_OPTIONS": "--inspect",
+        "USERS_DATABASE_URL": "postgresql://postgres:password@localhost:5452/users",
+        "POSTS_DATABASE_URL": "postgresql://postgres:password@localhost:5451/posts"
+      },
+      "console": "integratedTerminal"
+    }
+  ]
+}

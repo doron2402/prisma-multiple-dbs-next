@@ -1,0 +1,57 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../prisma-user-database/user-database-client-types"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("USERS_DATABASE_URL")
+}
+
+model User {
+  id          String @id @default(uuid())
+  email       String @unique
+  phoneNumber String @unique
+  password    String
+
+  firstName String?
+  lastName  String?
+
+  address String?
+  city    String?
+  state   String?
+  zipCode String?
+  country String?
+
+  /// Unix timestamp in seconds. When using in JavaScript, divide by 1000 and parseInt()
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  isActive Boolean @default(true)
+  isAdmin  Boolean @default(false)
+
+  isVerified Boolean @default(false)
+  isDeleted  Boolean @default(false)
+  isLocked   Boolean @default(false)
+
+  followers Follower[] @relation("UserFollowers")
+  following Follower[] @relation("UserFollowing")
+}
+
+model Follower {
+  id         String   @id @default(uuid())
+  user       User     @relation("UserFollowers", fields: [userId], references: [id])
+  userId     String
+  follower   User     @relation("UserFollowing", fields: [followerId], references: [id])
+  followerId String
+  /// Unix timestamp in seconds. When using in JavaScript, divide by 1000 and parseInt()
+  createdAt  DateTime @default(now())
+
+  @@unique([userId, followerId])
+}

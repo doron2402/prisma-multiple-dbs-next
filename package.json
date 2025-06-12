@@ -7,10 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "npx prisma generate --schema ./prisma-user-database/schema.prisma --no-engine && npx prisma generate --schema ./prisma-post-database/schema.prisma --no-engine",
-    "generate": "npx prisma generate --schema ./prisma-user-database/schema.prisma --no-engine && npx prisma generate --schema ./prisma-post-database/schema.prisma --no-engine",
-    "generate:user": "npx prisma generate --schema ./prisma-user-database/schema.prisma --no-engine",
-    "generate:post": "npx prisma generate --schema ./prisma-post-database/schema.prisma --no-engine",
+    "prisma:regenerate": "npx prisma generate --schema ./prisma-user-database/schema.prisma && npx prisma generate --schema ./prisma-post-database/schema.prisma",
+    "postinstall": "npx prisma generate --schema ./prisma-user-database/schema.prisma && npx prisma generate --schema ./prisma-post-database/schema.prisma",
+    "generate": "npx prisma generate --schema ./prisma-user-database/schema.prisma && npx prisma generate --schema ./prisma-post-database/schema.prisma",
+    "generate:user": "npx prisma generate --schema ./prisma-user-database/schema.prisma",
+    "generate:post": "npx prisma generate --schema ./prisma-post-database/schema.prisma",
     "migrate": "npx prisma migrate dev --schema ./prisma-user-database/schema.prisma && npx prisma migrate dev --schema ./prisma-post-database/schema.prisma",
     "migrate:user": "npx prisma migrate dev --schema ./prisma-user-database/schema.prisma",
     "migrate:post": "npx prisma migrate dev --schema ./prisma-post-database/schema.prisma",
@@ -25,6 +26,7 @@
   },
   "dependencies": {
     "@prisma/client": "^6.9.0",
+    "dotenv": "^16.5.0",
     "next": "15.3.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"

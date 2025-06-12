@@ -1,14 +1,17 @@
 {
   "compilerOptions": {
-    "target": "ES2017",
+    "target": "es2020",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
-    "noEmit": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true, // Set to false if you want compiled .js files
     "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "bundler",
+    // Key change: Use NodeNext or ESNext for module output
+    "module": "NodeNext", // Or "ESNext"
+    // Key change: Use NodeNext or Bundler for module resolution
+    "moduleResolution": "NodeNext", // Or "Bundler"
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
@@ -19,9 +22,14 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"] // Example if you use src directory
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+  ],
   "exclude": ["node_modules"]
 }

@@ -189,9 +189,9 @@ const config = {
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../prisma-user-database/user-database-client-types\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"USERS_DATABASE_URL\")\n}\n\nmodel User {\n  id          String @id @default(uuid())\n  email       String @unique\n  phoneNumber String @unique\n  password    String\n\n  firstName String?\n  lastName  String?\n\n  address String?\n  city    String?\n  state   String?\n  zipCode String?\n  country String?\n\n  /// Unix timestamp in seconds. When using in JavaScript, divide by 1000 and parseInt()\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  isActive Boolean @default(true)\n  isAdmin  Boolean @default(false)\n\n  isVerified Boolean @default(false)\n  isDeleted  Boolean @default(false)\n  isLocked   Boolean @default(false)\n\n  followers Follower[] @relation(\"UserFollowers\")\n  following Follower[] @relation(\"UserFollowing\")\n}\n\nmodel Follower {\n  id         String   @id @default(uuid())\n  user       User     @relation(\"UserFollowers\", fields: [userId], references: [id])\n  userId     String\n  follower   User     @relation(\"UserFollowing\", fields: [followerId], references: [id])\n  followerId String\n  /// Unix timestamp in seconds. When using in JavaScript, divide by 1000 and parseInt()\n  createdAt  DateTime @default(now())\n\n  @@unique([userId, followerId])\n}\n",
-  "inlineSchemaHash": "1968b6f09708c541a732d19770ae5942fec674413d9087e59a37995211845c04",
-  "copyEngine": false
+  "inlineSchema": "// users schema\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../prisma-user-database/user-database-client-types\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"USERS_DATABASE_URL\")\n}\n\nmodel User {\n  id          String @id @default(uuid())\n  email       String @unique\n  phoneNumber String @unique\n  password    String\n\n  firstName String?\n  lastName  String?\n\n  address String?\n  city    String?\n  state   String?\n  zipCode String?\n  country String?\n\n  /// Unix timestamp in seconds. When using in JavaScript, divide by 1000 and parseInt()\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  isActive Boolean @default(true)\n  isAdmin  Boolean @default(false)\n\n  isVerified Boolean @default(false)\n  isDeleted  Boolean @default(false)\n  isLocked   Boolean @default(false)\n\n  followers Follower[] @relation(\"UserFollowers\")\n  following Follower[] @relation(\"UserFollowing\")\n}\n\nmodel Follower {\n  id         String   @id @default(uuid())\n  user       User     @relation(\"UserFollowers\", fields: [userId], references: [id])\n  userId     String\n  follower   User     @relation(\"UserFollowing\", fields: [followerId], references: [id])\n  followerId String\n  /// Unix timestamp in seconds. When using in JavaScript, divide by 1000 and parseInt()\n  createdAt  DateTime @default(now())\n\n  @@unique([userId, followerId])\n}\n",
+  "inlineSchemaHash": "4815bd623df92359b96d1f3f2afdb5976acec79b8eadde36a452ea269236beb0",
+  "copyEngine": true
 }
 
 const fs = require('fs')
@@ -228,3 +228,9 @@ const PrismaClient = getPrismaClient(config)
 exports.PrismaClient = PrismaClient
 Object.assign(exports, Prisma)
 
+// file annotations for bundling tools to include these files
+path.join(__dirname, "libquery_engine-darwin-arm64.dylib.node");
+path.join(process.cwd(), "prisma-user-database/user-database-client-types/libquery_engine-darwin-arm64.dylib.node")
+// file annotations for bundling tools to include these files
+path.join(__dirname, "schema.prisma");
+path.join(process.cwd(), "prisma-user-database/user-database-client-types/schema.prisma")

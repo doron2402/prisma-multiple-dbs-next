@@ -172,9 +172,9 @@ const config = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../prisma-post-database/post-database-client-types\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"POSTS_DATABASE_URL\")\n}\n\nmodel Post {\n  id       String  @id @default(uuid())\n  title    String\n  content  String?\n  authorId Int // link to the users table\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  isActive   Boolean @default(true)\n  isDeleted  Boolean @default(false)\n  isVerified Boolean @default(false)\n}\n",
-  "inlineSchemaHash": "29dc0e9fdc4d9c5129fd2f6e2ee1ecfb1ee19e23f859061e933193da31a9a6a4",
-  "copyEngine": false
+  "inlineSchema": "// posts schema\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../prisma-post-database/post-database-client-types\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"POSTS_DATABASE_URL\")\n}\n\nmodel Post {\n  id       String  @id @default(uuid())\n  title    String\n  content  String?\n  authorId Int // link to the users table\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  isActive   Boolean @default(true)\n  isDeleted  Boolean @default(false)\n  isVerified Boolean @default(false)\n}\n",
+  "inlineSchemaHash": "ebbf0775868bdc65847d9e1ddca085d80b398f2446db5f09aac620a897fec0ad",
+  "copyEngine": true
 }
 
 const fs = require('fs')
@@ -211,3 +211,9 @@ const PrismaClient = getPrismaClient(config)
 exports.PrismaClient = PrismaClient
 Object.assign(exports, Prisma)
 
+// file annotations for bundling tools to include these files
+path.join(__dirname, "libquery_engine-darwin-arm64.dylib.node");
+path.join(process.cwd(), "prisma-post-database/post-database-client-types/libquery_engine-darwin-arm64.dylib.node")
+// file annotations for bundling tools to include these files
+path.join(__dirname, "schema.prisma");
+path.join(process.cwd(), "prisma-post-database/post-database-client-types/schema.prisma")

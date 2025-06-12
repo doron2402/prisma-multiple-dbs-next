@@ -1,16 +1,17 @@
 import Image from "next/image";
-import { postDBPrismaClient } from "../../lib/post-prisma-client";
-import { userDBPrismaClient } from "../../lib/user-prisma-client";
+import PrismaClientManager from '../../lib/prisma-client';
 import { User } from "../../prisma-user-database/user-database-client-types";
 import { Post } from "../../prisma-post-database/post-database-client-types";
 
 export default async function Home() {
 
-  const posts = await postDBPrismaClient.post.findMany();
-  const users = await userDBPrismaClient.user.findMany();
+  // Getting user DB client
+  const userManager = PrismaClientManager.getClient('users');
+  const users = await userManager.user.findMany();
 
-  console.log(posts);
-  console.log(users);
+  // Getting post DB client
+  const postManager = PrismaClientManager.getClient('posts');
+  const posts = await postManager.post.findMany();
 
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">

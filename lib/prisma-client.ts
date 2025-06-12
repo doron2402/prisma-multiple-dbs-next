@@ -15,14 +15,12 @@ class PrismaClientManager {
       case 'users':
         if (!this.userClient) {
           this.userClient = new UserPrismaClient();
-          this.userClient.$connect();
         }
         return this.userClient;
 
       case 'posts':
         if (!this.postClient) {
           this.postClient = new PostPrismaClient();
-          this.postClient.$connect();
         }
         return this.postClient;
 
@@ -30,6 +28,38 @@ class PrismaClientManager {
         throw new Error(`Invalid database type: ${databaseType}`);
     }
   }
+
+
+  static async disconnectAll() {
+    if (this.userClient) {
+      await this.userClient.$disconnect();
+      this.userClient = null;
+    }
+
+    if (this.postClient) {
+      await this.postClient.$disconnect();
+      this.postClient = null;
+    }
+  }
 }
 
 export default PrismaClientManager;
+
+
+export async function disconnectPrismaClients() {
+  console.warn('Disconnecting Prisma clients');
+  await PrismaClientManager.disconnectAll();
+}
+
+process.on('beforeExit', async () => {
+  await disconnectPrismaClients();
+})
+.on('SIGINT', async () => {
+  await disconnectPrismaClients();
+})
+.on('SIGTERM', async () => {
+  await disconnectPrismaClients();
+})
+.on('SIGQUIT', async () => {
+  await disconnectPrismaClients();
+})
